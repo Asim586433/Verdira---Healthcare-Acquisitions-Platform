@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verdira | Healthcare Acquisitions Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for Brand Colors */
+        :root {
+            --verdigris: #1D7874;
+            --onyx: #343A40;
+            --steel: #6C757D;
+            --light: #F8F9FA;
+            --white: #FFFFFF;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--onyx);
+            background-color: var(--white);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Georgia', serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--verdigris);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--verdigris);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--onyx);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--verdigris);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--onyx);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--verdigris);
+            color: var(--verdigris);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--verdigris);
+            color: var(--white);
+        }
+
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--verdigris);
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            box-shadow: 0 2px 10px var(--shadow);
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--verdigris);
+            color: var(--white);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-family: Georgia, serif;
+        }
+
+        .logo-text {
+            font-family: Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--onyx);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-left: 2rem;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--verdigris);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: var(--onyx);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 10rem;
+            padding-bottom: 5rem;
+            background: linear-gradient(135deg, rgba(29, 120, 116, 0.1) 0%, rgba(248, 249, 250, 0.5) 100%);
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hero-text {
+            flex: 1;
+            padding-right: 2rem;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .hero-image-placeholder {
+            width: 100%;
+            height: 350px;
+            background-color: var(--steel);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            font-size: 1.2rem;
+        }
+
+        .hero-buttons {
+            margin-top: 2rem;
+        }
+
+        .hero-buttons .btn:first-child {
+            margin-right: 1rem;
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--verdigris);
+            margin-bottom: 1rem;
+        }
+
+        /* Process Section */
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 3rem 0;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--steel);
+            z-index: -1;
+        }
+
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--verdigris);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .team-image {
+            width: 100%;
+            height: 250px;
+            background-color: var(--steel);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+        }
+
+        .team-info {
+            padding: 1.5rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background-color: var(--light);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .author-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--steel);
+            margin-right: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+        }
+
+        /* Careers Section */
+        .jobs-list {
+            margin-top: 2rem;
+        }
+
+        .job-item {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 3px 10px var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .job-info h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--onyx);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--verdigris);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--light);
+        }
+
+        .footer-links a:hover {
+            color: var(--verdigris);
+        }
+
+        .social-links {
+            display: flex;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            margin-right: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--verdigris);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Page Content */
+        .page-content {
+            display: none;
+            padding-top: 8rem;
+            min-height: 100vh;
+        }
+
+        #home-page {
+            display: block;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .features-grid,
+            .team-grid,
+            .testimonial-grid,
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-content {
+                flex-direction: column;
+            }
+
+            .hero-text {
+                padding-right: 0;
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                gap: 0;
+                flex-direction: column;
+                background-color: var(--white);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 15px var(--shadow);
+                padding: 1rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-item {
+                margin: 1.5rem 0;
+            }
+
+            .process-steps {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .process-steps::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .features-grid,
+            .team-grid,
+            .testimonial-grid,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            .hero-buttons .btn:first-child {
+                margin-right: 0;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">V</div>
+                <div class="logo-text">Verdira</div>
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="#" class="nav-link active" data-page="home-page">Home</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-page="founders-page">For Founders</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-page="why-page">Why Verdira</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-page="process-page">Our Process</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-page="rogue-page">Rogue</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-page="practice-page">Own a Practice</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-page="team-page">Team</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-page="careers-page">Careers</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <main id="home-page" class="page-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <h1>Transforming Healthcare Through Strategic Acquisitions</h1>
+                    <p>Verdira partners with innovative healthcare companies to drive growth, enhance value, and shape the future of healthcare delivery.</p>
+                    <div class="hero-buttons">
+                        <a href="#" class="btn">Explore Our Approach</a>
+                        <a href="#" class="btn btn-outline">Contact Us</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-image-placeholder">Healthcare Innovation Image</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Our Value Proposition</h2>
+                    <p>How we create value for healthcare businesses and founders</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Growth Acceleration</h3>
+                        <p>Leverage our resources and expertise to scale your healthcare business faster and more efficiently.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h3>Founder-Friendly Terms</h3>
+                        <p>We structure deals that respect your legacy while positioning the business for future success.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3>Strategic Integration</h3>
+                        <p>Access our network of portfolio companies to create synergies and unlock new opportunities.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Overview -->
+        <section class="section" style="background-color: var(--light);">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Our Process</h2>
+                    <p>A streamlined approach to healthcare acquisitions</p>
+                </div>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Evaluation</h3>
+                        <p>Comprehensive assessment of your business and market position</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Valuation</h3>
+                        <p>Fair market analysis and deal structuring</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Integration</h3>
+                        <p>Seamless transition and value-adding operational improvements</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Growth</h3>
+                        <p>Strategic expansion and scaling initiatives</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="section testimonials">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Success Stories</h2>
+                    <p>Hear from founders who have partnered with Verdira</p>
+                </div>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            <p>"Verdira understood the unique value of our healthcare technology and helped us scale to reach more patients than we ever thought possible."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-image">JD</div>
+                            <div>
+                                <h4>James Davidson</h4>
+                                <p>Former Founder, HealthTech Solutions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            <p>"The process was transparent and respectful from start to finish. They honored our company culture while driving impressive growth."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-image">SR</div>
+                            <div>
+                                <h4>Sarah Reynolds</h4>
+                                <p>Former CEO, MedCare Associates</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- For Founders Page -->
+    <div id="founders-page" class="page-content">
+        <section class="hero">
+            <div class="container">
+                <h1>For Founders</h1>
+                <p>Your legacy matters. We help healthcare founders transition their life's work to capable hands while ensuring continued growth and impact.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Why Partner With Verdira?</h2>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <h3>Respect for Your Legacy</h3>
+                        <p>We understand that your business represents years of dedication. We honor that legacy while positioning it for future success.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <h3>Fair Valuation</h3>
+                        <p>Our thorough valuation process ensures you receive appropriate value for what you've built.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3>Flexible Exit Options</h3>
+                        <p>From complete exits to partial liquidity events, we structure deals that meet your specific needs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="background-color: var(--light);">
+            <div class="container">
+                <div class="section-title">
+                    <h2>The Founder's Journey</h2>
+                </div>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Initial Conversation</h3>
+                        <p>We learn about your business and goals</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Assessment</h3>
+                        <p>Comprehensive evaluation of your business</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Offer</h3>
+                        <p>We present a tailored proposal</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Transition</h3>
+                        <p>Seamless handover with your involvement</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Other Pages (simplified for brevity) -->
+    <div id="why-page" class="page-content">
+        <section class="hero">
+            <div class="container">
+                <h1>Why Verdira</h1>
+                <p>Discover what sets us apart in the healthcare acquisitions landscape.</p>
+            </div>
+        </section>
+        <!-- Content would continue here -->
+    </div>
+
+    <div id="process-page" class="page-content">
+        <section class="hero">
+            <div class="container">
+                <h1>Our Process</h1>
+                <p>Our meticulous approach ensures successful transitions and sustainable growth.</p>
+            </div>
+        </section>
+        <!-- Content would continue here -->
+    </div>
+
+    <div id="rogue-page" class="page-content">
+        <section class="hero">
+            <div class="container">
+                <h1>Rogue</h1>
+                <p>For unconventional healthcare businesses that don't fit traditional models.</p>
+            </div>
+        </section>
+        <!-- Content would continue here -->
+    </div>
+
+    <div id="practice-page" class="page-content">
+        <section class="hero">
+            <div class="container">
+                <h1>Own a Practice</h1>
+                <p>Realize your dream of practice ownership with Verdira's support.</p>
+            </div>
+        </section>
+        <!-- Content would continue here -->
+    </div>
+
+    <div id="team-page" class="page-content">
+        <section class="hero">
+            <div class="container">
+                <h1>Our Team</h1>
+                <p>Meet the experienced professionals behind Verdira.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Leadership Team</h2>
+                </div>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="team-image">Executive Portrait</div>
+                        <div class="team-info">
+                            <h3>Michael Anderson</h3>
+                            <p>Chief Executive Officer</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-image">Executive Portrait</div>
+                        <div class="team-info">
+                            <h3>Jessica Williams</h3>
+                            <p>Chief Financial Officer</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-image">Executive Portrait</div>
+                        <div class="team-info">
+                            <h3>David Chen</h3>
+                            <p>Chief Operations Officer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="careers-page" class="page-content">
+        <section class="hero">
+            <div class="container">
+                <h1>Careers at Verdira</h1>
+                <p>Join our team and help transform healthcare delivery.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Open Positions</h2>
+                </div>
+                <div class="jobs-list">
+                    <div class="job-item">
+                        <div class="job-info">
+                            <h3>Acquisition Analyst</h3>
+                            <p>New York, NY</p>
+                        </div>
+                        <a href="#" class="btn">Apply Now</a>
+                    </div>
+                    <div class="job-item">
+                        <div class="job-info">
+                            <h3>Healthcare Portfolio Manager</h3>
+                            <p>Boston, MA</p>
+                        </div>
+                        <a href="#" class="btn">Apply Now</a>
+                    </div>
+                    <div class="job-item">
+                        <div class="job-info">
+                            <h3>Integration Specialist</h3>
+                            <p>Remote</p>
+                        </div>
+                        <a href="#" class="btn">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>Verdira</h3>
+                    <p>Transforming healthcare through strategic acquisitions and partnerships.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" data-page="home-page">Home</a></li>
+                        <li><a href="#" data-page="founders-page">For Founders</a></li>
+                        <li><a href="#" data-page="why-page">Why Verdira</a></li>
+                        <li><a href="#" data-page="process-page">Our Process</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" data-page="team-page">Team</a></li>
+                        <li><a href="#" data-page="careers-page">Careers</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Healthcare Ave, New York, NY 10001</li>
+                        <li><i class="fas fa-phone"></i> (212) 555-1234</li>
+                        <li><i class="fas fa-envelope"></i> info@verdira.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Verdira. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            const pageLinks = document.querySelectorAll('[data-page]');
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Mobile menu toggle
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+            
+            // Page navigation
+            pageLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Close mobile menu if open
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    
+                    // Get target page
+                    const targetPage = this.getAttribute('data-page');
+                    
+                    // Hide all pages
+                    pages.forEach(page => {
+                        page.style.display = 'none';
+                    });
+                    
+                    // Show target page
+                    document.getElementById(targetPage).style.display = 'block';
+                    
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Scroll to top
+                    window.scrollTo(0, 0);
+                });
+            });
+            
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
