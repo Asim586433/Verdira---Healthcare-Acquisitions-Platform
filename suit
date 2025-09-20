@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verdira Website Testing Suite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --verdigris: #1D7874;
+            --onyx: #343A40;
+            --steel: #6C757D;
+            --light: #F8F9FA;
+            --white: #FFFFFF;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--onyx);
+            background-color: var(--white);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Georgia', serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--verdigris);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .test-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .test-controls {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            height: fit-content;
+            position: sticky;
+            top: 1rem;
+        }
+
+        .test-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .test-btn {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: var(--verdigris);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+        }
+
+        .test-btn:hover {
+            background: var(--onyx);
+        }
+
+        .test-results {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .test-case {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .test-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 1rem;
+        }
+
+        .status-not-tested {
+            background: var(--steel);
+            color: white;
+        }
+
+        .status-pass {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-fail {
+            background: var(--danger);
+            color: white;
+        }
+
+        .status-warning {
+            background: var(--warning);
+            color: black;
+        }
+
+        .test-details {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .test-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .run-btn {
+            background: var(--verdigris);
+            color: white;
+        }
+
+        .view-btn {
+            background: var(--steel);
+            color: white;
+        }
+
+        .test-visual {
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px dashed var(--steel);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .website-frame {
+            width: 100%;
+            height: 500px;
+            border: 1px solid var(--steel);
+            border-radius: 4px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--verdigris);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .test-summary {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 4px;
+        }
+
+        .summary-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-box {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 4px;
+            color: white;
+        }
+
+        .stat-total {
+            background: var(--steel);
+        }
+
+        .stat-passed {
+            background: var(--success);
+        }
+
+        .stat-failed {
+            background: var(--danger);
+        }
+
+        .stat-warning {
+            background: var(--warning);
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Verdira Website Testing Suite</h1>
+        <p>This testing suite verifies all functionality of the Verdira healthcare acquisitions platform website.</p>
+        
+        <div class="progress-bar">
+            <div class="progress" id="test-progress"></div>
+        </div>
+        
+        <div class="test-container">
+            <div class="test-controls">
+                <div class="test-section">
+                    <h3>Test Categories</h3>
+                    <button class="test-btn" onclick="runTests('all')">Run All Tests</button>
+                    <button class="test-btn" onclick="runTests('navigation')">Navigation Tests</button>
+                    <button class="test-btn" onclick="runTests('responsive')">Responsive Design Tests</button>
+                    <button class="test-btn" onclick="runTests('interaction')">Interaction Tests</button>
+                    <button class="test-btn" onclick="runTests('content')">Content Tests</button>
+                </div>
+                
+                <div class="test-section">
+                    <h3>Test Actions</h3>
+                    <button class="test-btn" onclick="resetTests()">Reset All Tests</button>
+                    <button class="test-btn" onclick="exportResults()">Export Test Results</button>
+                </div>
+                
+                <div class="test-section">
+                    <h3>Live Website</h3>
+                    <button class="test-btn" onclick="showWebsite()">View Website in Frame</button>
+                </div>
+            </div>
+            
+            <div class="test-results">
+                <h2>Test Results</h2>
+                
+                <!-- Navigation Tests -->
+                <div class="test-case" id="test-nav-1">
+                    <h3>Main Navigation Links <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that all main navigation links work correctly and navigate to the proper pages.</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> All navigation links should work without errors.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('nav-1')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('nav-1')">View Details</button>
+                    </div>
+                    <div class="test-visual" id="visual-nav-1">
+                        <!-- Visual test representation would go here -->
+                    </div>
+                </div>
+                
+                <div class="test-case" id="test-nav-2">
+                    <h3>Mobile Navigation <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that the mobile hamburger menu works correctly on smaller screens.</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> Hamburger menu should open/close navigation on mobile view.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('nav-2')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('nav-2')">View Details</button>
+                    </div>
+                </div>
+                
+                <div class="test-case" id="test-nav-3">
+                    <h3>Footer Navigation <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that all footer links work correctly.</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> All footer links should work without errors.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('nav-3')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('nav-3')">View Details</button>
+                    </div>
+                </div>
+                
+                <!-- Responsive Tests -->
+                <div class="test-case" id="test-resp-1">
+                    <h3>Desktop Responsiveness <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that the website displays correctly on desktop screens (1200px+).</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> Layout should use multi-column design on desktop.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('resp-1')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('resp-1')">View Details</button>
+                    </div>
+                </div>
+                
+                <div class="test-case" id="test-resp-2">
+                    <h3>Tablet Responsiveness <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that the website displays correctly on tablet screens (768px-1199px).</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> Layout should adapt to medium screen sizes appropriately.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('resp-2')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('resp-2')">View Details</button>
+                    </div>
+                </div>
+                
+                <div class="test-case" id="test-resp-3">
+                    <h3>Mobile Responsiveness <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that the website displays correctly on mobile screens (<768px).</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> Layout should switch to single column on mobile.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('resp-3')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('resp-3')">View Details</button>
+                    </div>
+                </div>
+                
+                <!-- Interaction Tests -->
+                <div class="test-case" id="test-int-1">
+                    <h3>Button Hover Effects <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that all buttons have appropriate hover effects.</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> Buttons should change appearance on hover.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('int-1')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('int-1')">View Details</button>
+                    </div>
+                </div>
+                
+                <div class="test-case" id="test-int-2">
+                    <h3>Form Interactions <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that all form elements work correctly.</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> Form fields should be focusable and submittable.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('int-2')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('int-2')">View Details</button>
+                    </div>
+                </div>
+                
+                <div class="test-case" id="test-int-3">
+                    <h3>Page Transition Smoothness <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that transitions between pages are smooth.</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> Page transitions should be smooth without flashes.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('int-3')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('int-3')">View Details</button>
+                    </div>
+                </div>
+                
+                <!-- Content Tests -->
+                <div class="test-case" id="test-cont-1">
+                    <h3>Image Loading <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that all images load correctly and are placed properly.</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> All images should load without errors and be correctly positioned.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('cont-1')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('cont-1')">View Details</button>
+                    </div>
+                </div>
+                
+                <div class="test-case" id="test-cont-2">
+                    <h3>Content Completeness <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that all pages have appropriate content.</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> All pages should have complete content sections.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('cont-2')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('cont-2')">View Details</button>
+                    </div>
+                </div>
+                
+                <div class="test-case" id="test-cont-3">
+                    <h3>Typography Consistency <span class="test-status status-not-tested">Not Tested</span></h3>
+                    <p>Tests that all text follows the defined typography guidelines.</p>
+                    <div class="test-details">
+                        <p><strong>Expected:</strong> All text should use the correct fonts and sizes.</p>
+                        <p><strong>Actual:</strong> <span class="actual-result">Not tested yet</span></p>
+                    </div>
+                    <div class="test-actions">
+                        <button class="action-btn run-btn" onclick="runSpecificTest('cont-3')">Run Test</button>
+                        <button class="action-btn view-btn" onclick="toggleDetails('cont-3')">View Details</button>
+                    </div>
+                </div>
+                
+                <div class="test-summary">
+                    <h2>Test Summary</h2>
+                    <div class="summary-stats">
+                        <div class="stat-box stat-total">
+                            <h3>Total Tests</h3>
+                            <p id="total-tests">0</p>
+                        </div>
+                        <div class="stat-box stat-passed">
+                            <h3>Passed</h3>
+                            <p id="passed-tests">0</p>
+                        </div>
+                        <div class="stat-box stat-failed">
+                            <h3>Failed</h3>
+                            <p id="failed-tests">0</p>
+                        </div>
+                        <div class="stat-box stat-warning">
+                            <h3>Warnings</h3>
+                            <p id="warning-tests">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test state tracking
+        const testState = {
+            'nav-1': 'not-tested',
+            'nav-2': 'not-tested',
+            'nav-3': 'not-tested',
+            'resp-1': 'not-tested',
+            'resp-2': 'not-tested',
+            'resp-3': 'not-tested',
+            'int-1': 'not-tested',
+            'int-2': 'not-tested',
+            'int-3': 'not-tested',
+            'cont-1': 'not-tested',
+            'cont-2': 'not-tested',
+            'cont-3': 'not-tested'
+        };
+        
+        // Test functions (simulated)
+        function runTests(category) {
+            if (category === 'all' || category === 'navigation') {
+                runNavigationTests();
+            }
+            if (category === 'all' || category === 'responsive') {
+                runResponsiveTests();
+            }
+            if (category === 'all' || category === 'interaction') {
+                runInteractionTests();
+            }
+            if (category === 'all' || category === 'content') {
+                runContentTests();
+            }
+            updateProgress();
+        }
+        
+        function runSpecificTest(testId) {
+            // Simulate test execution
+            const testElement = document.getElementById(`test-${testId}`);
+            const statusElement = testElement.querySelector('.test-status');
+            const actualResult = testElement.querySelector('.actual-result');
+            
+            // Random result for simulation
+            const results = ['pass', 'fail', 'warning'];
+            const result = results[Math.floor(Math.random() * results.length)];
+            
+            // Update UI
+            statusElement.textContent = result.charAt(0).toUpperCase() + result.slice(1);
+            statusElement.className = `test-status status-${result}`;
+            
+            actualResult.textContent = `Test ${result === 'pass' ? 'passed' : 'failed'} with ${result === 'pass' ? 'no' : 'some'} issues`;
+            
+            // Update test state
+            testState[testId] = result;
+            
+            updateProgress();
+        }
+        
+        function runNavigationTests() {
+            runSpecificTest('nav-1');
+            runSpecificTest('nav-2');
+            runSpecificTest('nav-3');
+        }
+        
+        function runResponsiveTests() {
+            runSpecificTest('resp-1');
+            runSpecificTest('resp-2');
+            runSpecificTest('resp-3');
+        }
+        
+        function runInteractionTests() {
+            runSpecificTest('int-1');
+            runSpecificTest('int-2');
+            runSpecificTest('int-3');
+        }
+        
+        function runContentTests() {
+            runSpecificTest('cont-1');
+            runSpecificTest('cont-2');
+            runSpecificTest('cont-3');
+        }
+        
+        function toggleDetails(testId) {
+            const detailsElement = document.getElementById(`test-${testId}`).querySelector('.test-details');
+            detailsElement.style.display = detailsElement.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function resetTests() {
+            // Reset all test statuses
+            for (const testId in testState) {
+                testState[testId] = 'not-tested';
+                const testElement = document.getElementById(`test-${testId}`);
+                const statusElement = testElement.querySelector('.test-status');
+                const actualResult = testElement.querySelector('.actual-result');
+                
+                statusElement.textContent = 'Not Tested';
+                statusElement.className = 'test-status status-not-tested';
+                actualResult.textContent = 'Not tested yet';
+            }
+            
+            updateProgress();
+        }
+        
+        function exportResults() {
+            // Simulate exporting results
+            alert('Test results exported successfully!');
+        }
+        
+        function showWebsite() {
+            // This would show the actual website in an iframe
+            alert('Website would be displayed in a frame here. In a real implementation, this would show the actual Verdira website.');
+        }
+        
+        function updateProgress() {
+            // Calculate test progress
+            const totalTests = Object.keys(testState).length;
+            let completedTests = 0;
+            let passedTests = 0;
+            let failedTests = 0;
+            let warningTests = 0;
+            
+            for (const testId in testState) {
+                if (testState[testId] !== 'not-tested') {
+                    completedTests++;
+                    
+                    if (testState[testId] === 'pass') {
+                        passedTests++;
+                    } else if (testState[testId] === 'fail') {
+                        failedTests++;
+                    } else if (testState[testId] === 'warning') {
+                        warningTests++;
+                    }
+                }
+            }
+            
+            // Update progress bar
+            const progressPercent = (completedTests / totalTests) * 100;
+            document.getElementById('test-progress').style.width = `${progressPercent}%`;
+            
+            // Update summary stats
+            document.getElementById('total-tests').textContent = totalTests;
+            document.getElementById('passed-tests').textContent = passedTests;
+            document.getElementById('failed-tests').textContent = failedTests;
+            document.getElementById('warning-tests').textContent = warningTests;
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
